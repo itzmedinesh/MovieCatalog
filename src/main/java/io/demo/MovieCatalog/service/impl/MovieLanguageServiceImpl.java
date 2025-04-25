@@ -1,5 +1,6 @@
 package io.demo.MovieCatalog.service.impl;
 
+import io.demo.MovieCatalog.exception.ResourceNotFoundException;
 import io.demo.MovieCatalog.model.Movie;
 import io.demo.MovieCatalog.model.MovieLanguage;
 import io.demo.MovieCatalog.repository.MovieLanguageRepository;
@@ -53,7 +54,7 @@ public class MovieLanguageServiceImpl implements MovieLanguageService {
                 // Set the actual movie entity to ensure proper association
                 language.setMovie(movie.get());
             } else {
-                throw new IllegalArgumentException("Movie with ID " + movieId + " not found");
+                throw new ResourceNotFoundException("Movie", "id", movieId);
             }
         }
 
@@ -93,3 +94,5 @@ public class MovieLanguageServiceImpl implements MovieLanguageService {
                 .orElse(false);
     }
 }
+
+

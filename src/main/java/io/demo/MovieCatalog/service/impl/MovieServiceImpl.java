@@ -5,6 +5,8 @@ import io.demo.MovieCatalog.repository.CustomMovieRepository;
 import io.demo.MovieCatalog.repository.MovieRepository;
 import io.demo.MovieCatalog.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,11 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getAllMovies() {
         return customMovieRepository.findAllActiveMovies();
     }
+    
+    @Override
+    public Page<Movie> getAllMovies(Pageable pageable) {
+        return customMovieRepository.findAllActiveMovies(pageable);
+    }
 
     @Override
     public Optional<Movie> getMovieById(UUID id) {
@@ -50,6 +57,8 @@ public class MovieServiceImpl implements MovieService {
                     existingMovie.setName(movieDetails.getName());
                     existingMovie.setDescription(movieDetails.getDescription());
                     existingMovie.setDurationMinutes(movieDetails.getDurationMinutes());
+                    existingMovie.setImageUrl(movieDetails.getImageUrl());
+                    existingMovie.setTrailerUrl(movieDetails.getTrailerUrl());
                     existingMovie.setUpdatedAt(LocalDateTime.now());
                     return movieRepository.save(existingMovie);
                 });

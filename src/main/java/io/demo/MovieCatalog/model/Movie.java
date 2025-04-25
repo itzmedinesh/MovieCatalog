@@ -28,6 +28,12 @@ public class Movie {
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+    
+    @Column(name = "image_url")
+    private String imageUrl;
+    
+    @Column(name = "trailer_url")
+    private String trailerUrl;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -46,4 +52,8 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MovieGenre> genres;
+    
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MovieCast> cast;
 }
+

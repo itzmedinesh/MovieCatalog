@@ -5,9 +5,11 @@ import io.demo.MovieCatalog.controller.MovieGenreController;
 import io.demo.MovieCatalog.controller.MovieLanguageController;
 import io.demo.MovieCatalog.dto.*;
 import io.demo.MovieCatalog.model.Movie;
+import io.demo.MovieCatalog.model.MovieCast;
 import io.demo.MovieCatalog.model.MovieFormat;
 import io.demo.MovieCatalog.model.MovieGenre;
 import io.demo.MovieCatalog.model.MovieLanguage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +26,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class MovieMapper {
 
+    @Autowired
+    private MovieCastMapper movieCastMapper;
+
     public MovieDTO toDTO(Movie movie) {
         if (movie == null) {
             return null;
@@ -34,53 +39,52 @@ public class MovieMapper {
                 .name(movie.getName())
                 .durationMinutes(movie.getDurationMinutes())
                 .description(movie.getDescription())
+                .imageUrl(movie.getImageUrl())
+                .trailerUrl(movie.getTrailerUrl())
                 .createdAt(movie.getCreatedAt())
                 .updatedAt(movie.getUpdatedAt())
                 .deleted(movie.getDeletedAt() == null ? null : true)
                 .languages(movie.getLanguages() != null ?
                         movie.getLanguages().stream()
-                                .map(lang -> {
-                                    return addLinks(MovieLanguageDTO.builder()
-                                            .id(lang.getId())
-                                            .movieId(movie.getId())
-                                            .name(lang.getName())
-                                            .description(lang.getDescription())
-                                            .createdAt(lang.getCreatedAt())
-                                            .updatedAt(lang.getUpdatedAt())
-                                            .deleted(lang.getDeletedAt() == null ? null : true)
-                                            .build());
-                                })
+                                .map(lang -> addLinks(MovieLanguageDTO.builder()
+                                        .id(lang.getId())
+                                        .movieId(movie.getId())
+                                        .name(lang.getName())
+                                        .description(lang.getDescription())
+                                        .createdAt(lang.getCreatedAt())
+                                        .updatedAt(lang.getUpdatedAt())
+                                        .deleted(lang.getDeletedAt() == null ? null : true)
+                                        .build()))
                                 .collect(Collectors.toList()) :
                         Collections.emptyList())
                 .formats(movie.getFormats() != null ?
                         movie.getFormats().stream()
-                                .map(format -> {
-                                    return addLinks(MovieFormatDTO.builder()
-                                            .id(format.getId())
-                                            .movieId(movie.getId())
-                                            .name(format.getName())
-                                            .description(format.getDescription())
-                                            .createdAt(format.getCreatedAt())
-                                            .updatedAt(format.getUpdatedAt())
-                                            .deleted(format.getDeletedAt() == null ? null : true)
-                                            .build());
-                                })
+                                .map(format -> addLinks(MovieFormatDTO.builder()
+                                        .id(format.getId())
+                                        .movieId(movie.getId())
+                                        .name(format.getName())
+                                        .description(format.getDescription())
+                                        .createdAt(format.getCreatedAt())
+                                        .updatedAt(format.getUpdatedAt())
+                                        .deleted(format.getDeletedAt() == null ? null : true)
+                                        .build()))
                                 .collect(Collectors.toList()) :
                         Collections.emptyList())
                 .genres(movie.getGenres() != null ?
                         movie.getGenres().stream()
-                                .map(genre -> {
-                                    return addLinks(MovieGenreDTO.builder()
-                                            .id(genre.getId())
-                                            .movieId(movie.getId())
-                                            .name(genre.getName())
-                                            .description(genre.getDescription())
-                                            .createdAt(genre.getCreatedAt())
-                                            .updatedAt(genre.getUpdatedAt())
-                                            .deleted(genre.getDeletedAt() == null ? null : true)
-                                            .build());
-                                })
+                                .map(genre -> addLinks(MovieGenreDTO.builder()
+                                        .id(genre.getId())
+                                        .movieId(movie.getId())
+                                        .name(genre.getName())
+                                        .description(genre.getDescription())
+                                        .createdAt(genre.getCreatedAt())
+                                        .updatedAt(genre.getUpdatedAt())
+                                        .deleted(genre.getDeletedAt() == null ? null : true)
+                                        .build()))
                                 .collect(Collectors.toList()) :
+                        Collections.emptyList())
+                .cast(movie.getCast() != null ?
+                        movieCastMapper.toDTOList(movie.getCast()) :
                         Collections.emptyList())
                 .build();
     }
@@ -95,6 +99,8 @@ public class MovieMapper {
                 .name(request.getName())
                 .description(request.getDescription())
                 .durationMinutes(request.getDurationMinutes())
+                .imageUrl(request.getImageUrl())
+                .trailerUrl(request.getTrailerUrl())
                 .build();
 
         // Create languages
@@ -138,6 +144,23 @@ public class MovieMapper {
             }
             movie.setGenres(genres);
         }
+        
+        // Create cast
+        if (request.getCast() != null && !request.getCast().isEmpty()) {
+            List<MovieCast> cast = new ArrayList<>();
+            for (MovieRequest.MovieCastRequest castMember : request.getCast()) {
+                cast.add(MovieCast.builder()
+                        .id(UUID.randomUUID())
+                        .movie(movie)
+                        .actorName(castMember.getActorName())
+                        .characterName(castMember.getCharacterName())
+                        .role(castMember.getRole())
+                        .profileImageUrl(castMember.getProfileImageUrl())
+                        .description(castMember.getDescription())
+                        .build());
+            }
+            movie.setCast(cast);
+        }
 
         return movie;
     }
@@ -150,8 +173,9 @@ public class MovieMapper {
         movie.setName(request.getName());
         movie.setDurationMinutes(request.getDurationMinutes());
         movie.setDescription(request.getDescription());
+        movie.setImageUrl(request.getImageUrl());
+        movie.setTrailerUrl(request.getTrailerUrl());
         movie.setUpdatedAt(LocalDateTime.now());
-
     }
 
     private MovieFormatDTO addLinks(MovieFormatDTO dto) {
@@ -171,5 +195,4 @@ public class MovieMapper {
         dto.add(linkTo(methodOn(MovieGenreController.class).getAllGenres()).withRel(IanaLinkRelations.COLLECTION));
         return dto;
     }
-
 }

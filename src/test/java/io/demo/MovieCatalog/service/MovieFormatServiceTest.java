@@ -1,5 +1,6 @@
 package io.demo.MovieCatalog.service;
 
+import io.demo.MovieCatalog.exception.ResourceNotFoundException;
 import io.demo.MovieCatalog.model.Movie;
 import io.demo.MovieCatalog.model.MovieFormat;
 import io.demo.MovieCatalog.repository.MovieFormatRepository;
@@ -118,7 +119,7 @@ public class MovieFormatServiceTest {
         when(movieRepository.findById(invalidMovieId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(ResourceNotFoundException.class, () -> {
             movieFormatService.createFormat(formatToCreate);
         });
         
