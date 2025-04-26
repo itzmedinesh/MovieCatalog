@@ -6,9 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "\"MovieFormat\"", schema = "moviecatalog", indexes = {
-        @Index(name = "idx_movieformat_movie_id", columnList = "movie_id")
-})
+@Table(name = "movie_format")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +15,7 @@ import java.util.UUID;
 public class MovieFormat {
 
     @Id
-    @Column(columnDefinition = "BINARY(16)", insertable = false, updatable = false)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @ManyToOne

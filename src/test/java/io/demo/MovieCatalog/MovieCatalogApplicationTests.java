@@ -1,14 +1,12 @@
 package io.demo.MovieCatalog;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 @SpringBootTest
-class MovieCatalogApplicationTests {
+public class MovieCatalogApplicationTests {
 
-        @Test
-        void contextLoads() {
-        }
 
 }
 

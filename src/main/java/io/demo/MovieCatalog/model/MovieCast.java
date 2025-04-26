@@ -6,9 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "movie_cast", indexes = {
-        @Index(name = "idx_moviecast_movie_id", columnList = "movie_id")
-})
+@Table(name = "movie_cast")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +15,7 @@ import java.util.UUID;
 public class MovieCast {
 
     @Id
-    @Column(columnDefinition = "BINARY(16)", insertable = false, updatable = false)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)

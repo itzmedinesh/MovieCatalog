@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "\"Movie\"", schema = "moviecatalog", indexes = {
-        @Index(name = "idx_movie_name", columnList = "name")
-})
+@Table(name = "movie")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,7 +16,7 @@ import java.util.UUID;
 public class Movie {
 
     @Id
-    @Column(columnDefinition = "BINARY(16)", insertable = false, updatable = false)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     private String name;
