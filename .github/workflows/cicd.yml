@@ -28,8 +28,8 @@ jobs:
     runs-on: [mcrunner]
     steps:
       - name: Pull image from docker hub
-        run: docker pull itzmedinesh/movie-catalog-service:latest
+        run: sudo docker pull itzmedinesh/movie-catalog-service:latest
       - name: Delete container if exists
-        run: docker rm -f movie-catalog-container
+        run: sudo docker rm -f movie-catalog-container
       - name: Run as container
-        run: docker run -d -p 8080:8080 --name movie-catalog-container itzmedinesh/movie-catalog-service
+        run: sudo docker run -d -p 8080:8080 --name movie-catalog-container itzmedinesh/movie-catalog-service
