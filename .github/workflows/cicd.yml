@@ -1,0 +1,35 @@
+name: CICD
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+      - name : Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build project
+        run: mvn clean install
+      - name: Docker Login
+        run: docker login -u ${{secrets.DOCKHUB_UID}} -p ${{secrets.DOCKHUB_PWD}}
+      - name: Build docker image
+        run: docker build -t itzmedinesh/movie-catalog-service .
+      - name: Push image to docker hub
+        run: docker push itzmedinesh/movie-catalog-service:latest
+
+  deploy:
+    needs: build
+    runs-on: [mcrunner]
+    steps:
+      - name: Pull image from docker hub
+        run: docker pull itzmedinesh/movie-catalog-service:latest
+      - name: Delete container if exists
+        run: docker rm -f movie-catalog-container
+      - name: Run as container
+        run: docker run -d -p 8080:8080 --name movie-catalog-container itzmedinesh/movie-catalog-service
