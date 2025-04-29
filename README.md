@@ -763,3 +763,6 @@ This API implements HATEOAS (Hypermedia as the Engine of Application State) prin
 Example of HATEOAS links in responses:
 - `self`: Link to the resource itself
 - `collection`: Link to the collection containing the resource
+
+## Build
+Trigger Build 1
