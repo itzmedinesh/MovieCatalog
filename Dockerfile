@@ -7,14 +7,17 @@ EXPOSE 8080
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.15.0/opentelemetry-javaagent.jar /otel-javaagent.jar
 
 # Configure opentelemetry collector agent
-ENV JAVA_TOOL_OPTIONS="-javaagent:/otel-javaagent.jar \
- -Dotel.service.name=MovieCatalog \
- -Dotel.exporter.otlp.endpoint=https://my-observability-project-efe08b.ingest.us-east-1.aws.elastic.cloud:443 \
- -Dotel.exporter.otlp.headers=Authorization=ApiKey bmxwMHJwWUJ0SG11U293bHJwbUM6LU9UcmFDLUJYYWpNbHhMLXctU25wdw== \
- -Dotel.exporter.oltp.protocol=http/protobuf \
- -Dotel.resource.attributes=service.version=1.0,deployment.environment=cloud \
- -Dmanagement.metrics.export.otlp.enabled=true \
- -Dmanagement.metrics.export.otlp.endpoint=https://my-observability-project-efe08b.ingest.us-east-1.aws.elastic.cloud \
- -Dmanagement.metrics.export.otlp.headers.Authorization=ApiKey bmxwMHJwWUJ0SG11U293bHJwbUM6LU9UcmFDLUJYYWpNbHhMLXctU25wdw=="
+ENV JAVA_TOOL_OPTIONS="-javaagent:/otel-javaagent.jar"
+ENV OTEL_SERVICE_NAME="MovieCatalog"
+ENV OTEL_EXPORTER_OTLP_ENDPOINT="https://my-observability-project-efe08b.ingest.us-east-1.aws.elastic.cloud:443"
+ENV OTEL_EXPORTER_OTLP_HEADERS="Authorization=ApiKey bmxwMHJwWUJ0SG11U293bHJwbUM6LU9UcmFDLUJYYWpNbHhMLXctU25wdw=="
+ENV OTEL_METRICS_EXPORTER="otlp"
+ENV OTEL_TRACES_EXPORTER="none"
+ENV OTEL_LOGS_EXPORTER="none"
+ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
+ENV OTEL_RESOURCE_ATTRIBUTES="service.version=1.0,deployment.environment=cloud"
+ENV MANAGEMENT_METRICS_EXPORT_OTLP_ENABLED="true"
+ENV MANAGEMENT_METRICS_EXPORT_OTLP_ENDPOINT="https://my-observability-project-efe08b.ingest.us-east-1.aws.elastic.cloud:443"
+ENV MANAGEMENT_METRICS_EXPORT_OTLP_HEADERS_AUTHORIZATION="ApiKey bmxwMHJwWUJ0SG11U293bHJwbUM6LU9UcmFDLUJYYWpNbHhMLXctU25wdw=="
 
 CMD ["java","-jar","MovieCatalog.jar"]
