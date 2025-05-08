@@ -12,6 +12,8 @@ ENV OTEL_SERVICE_NAME="MovieCatalog"
 ENV OTEL_EXPORTER_OTLP_ENDPOINT="https://my-observability-project-efe08b.ingest.us-east-1.aws.elastic.cloud:443"
 ENV OTEL_EXPORTER_OTLP_HEADERS="Authorization=ApiKey bmxwMHJwWUJ0SG11U293bHJwbUM6LU9UcmFDLUJYYWpNbHhMLXctU25wdw=="
 ENV OTEL_METRICS_EXPORTER="otlp"
+ENV OTEL_TRACES_EXPORTER="otlp"
+ENV OTEL_LOGS_EXPORTER="otlp"
 ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
 ENV OTEL_RESOURCE_ATTRIBUTES="service.version=1.0,deployment.environment=cloud"
 
