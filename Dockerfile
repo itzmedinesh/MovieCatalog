@@ -9,7 +9,7 @@ ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/release
 # Configure opentelemetry collector agent
 ENV OTEL_SERVICE_NAME=MovieCatalog \
     OTEL_EXPORTER_OTLP_ENDPOINT=https://my-observability-project-efe08b.ingest.us-east-1.aws.elastic.cloud:443 \
-    OTEL_EXPORTER_OTLP_HEADERS=Authorization=ApiKey bmxwMHJwWUJ0SG11U293bHJwbUM6LU9UcmFDLUJYYWpNbHhMLXctU25wdw== \
+    OTEL_EXPORTER_OTLP_HEADERS=Authorization: ApiKey bmxwMHJwWUJ0SG11U293bHJwbUM6LU9UcmFDLUJYYWpNbHhMLXctU25wdw== \
     OTEL_METRICS_EXPORTER=otlp \
     OTEL_TRACES_EXPORTER=otlp \
     OTEL_LOGS_EXPORTER=none \
