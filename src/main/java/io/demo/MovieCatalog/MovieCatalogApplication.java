@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 public class MovieCatalogApplication {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    
+
     public static void main(String[] args) {
         SpringApplication.run(MovieCatalogApplication.class, args);
     }
@@ -33,7 +33,7 @@ public class MovieCatalogApplication {
 
             response = secretsClient.getSecretValue(
                     GetSecretValueRequest.builder()
-                            .secretId("movies/movie-catalog-db")
+                            .secretId("movie-search/movie-catalog-db")
                             .build());
         }
 
